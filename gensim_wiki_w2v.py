@@ -9,7 +9,6 @@ import codecs
 import re
 import sys
 import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
 
 data_path = './in/'
 model_path= './model/'
@@ -74,6 +73,16 @@ def train_model(sentences):
 model = word2vec.Word2Vec.load(model_path+model_name)
 print model.similarity(u'男人',u'女人')
 
+import math
+def cosine_similarity(v1,v2):
+    "compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)"
+    sumxx, sumxy, sumyy = 0, 0, 0
+    for i in range(len(v1)):
+        x = v1[i]; y = v2[i]
+        sumxx += x*x
+        sumyy += y*y
+        sumxy += x*y
+    return sumxy/math.sqrt(sumxx*sumyy)
 
 def sentence_word2vec_sim(text1,text2, model, dim):
     text1vec = np.asarray([0. for _ in range(dim)])
