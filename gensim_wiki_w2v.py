@@ -8,6 +8,8 @@ import time
 import codecs
 import re
 import sys
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 
 data_path = './in/'
 model_path= './model/'
@@ -71,3 +73,22 @@ def train_model(sentences):
 
 model = word2vec.Word2Vec.load(model_path+model_name)
 print model.similarity('男人','女人')
+
+
+def sentence_word2vec_sim(text1,text2, model, dim):
+    text1vec = np.asarray([0. for _ in range(dim)])
+    text2vec = np.asarray([0. for _ in range(dim)])
+
+    for word in text1:
+        text1vec = np.add(text1vec,model.get_vector(word))
+
+    for word in text2:
+        text2vec = np.add(text2vec,model.get_vector(word))
+    return cosine_similarity(text1vec,text2vec)
+
+
+
+sentence_word2vec_sim(u'今晚饭还在煮就闻到烧焦的味了',u'机器有异味。', model.wv, 50)
+
+
+
