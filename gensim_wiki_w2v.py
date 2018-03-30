@@ -91,14 +91,14 @@ def sentence_word2vec_sim(text1,text2, model, dim):
     for word in text1:
         try:
             text1vec = np.add(text1vec,model.wv.word_vec(word))
-        except Excetion as e:
+        except Exception as e:
             print e
             text1vec = np.add(text1vec,np.asarray([0. for _ in range(dim)]))
 
     for word in text2:
         try:
             text2vec = np.add(text2vec,model.wv.word_vec(word))
-        except Excetion as e:
+        except Exception as e:
             print e
             text2vec = np.add(text2vec,np.asarray([0. for _ in range(dim)]))
 
