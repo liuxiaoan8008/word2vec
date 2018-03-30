@@ -89,15 +89,56 @@ def sentence_word2vec_sim(text1,text2, model, dim):
     text2vec = np.asarray([0. for _ in range(dim)])
 
     for word in text1:
-        text1vec = np.add(text1vec,model.wv.word_vec(word))
+        try:
+            text1vec = np.add(text1vec,model.wv.word_vec(word))
+        except Excetion as e:
+            print e
+            text1vec = np.add(text1vec,np.asarray([0. for _ in range(dim)]))
 
     for word in text2:
-        text2vec = np.add(text2vec,model.wv.word_vec(word))
+        try:
+            text2vec = np.add(text2vec,model.wv.word_vec(word))
+        except Excetion as e:
+            print e
+            text2vec = np.add(text2vec,np.asarray([0. for _ in range(dim)]))
+
     return cosine_similarity(text1vec,text2vec)
 
 
 
-sentence_word2vec_sim(u'今晚饭还在煮就闻到烧焦的味了',u'机器有异味', model, 50)
+print sentence_word2vec_sim(u'今晚饭还在煮就闻到烧焦的味了',u'机器有异味。', model, 50)
+
+import jieba
+import operator
+def get_sim_text(in_file,sim_file,out_file,model):
+    raw = []
+    with open(in_file) as f:
+        for line in f:
+            line = unicode(line.strip(), 'utf-8')
+            raw.append(line)
+
+    question = []
+    with open(sim_file) as f:
+        for line in f:
+            line = unicode(line.strip(), 'utf-8')
+            question.append(line)
+
+    seg_raw = []
+    for x in raw:
+        seg_raw.append(jieba.lcut(x))
+
+    seg_question = []
+    for x in question:
+        seg_question.append(jieba.lcut(x))
+
+    out_f = open(out_file, 'w')
+    for raw_words,i in zip(seg_raw,len(raw)):
+        sim = []
+        for question_words in seg_question:
+            sim.append(sentence_word2vec_sim(raw_words,question_words,model,50))
+        max_index, max_value = max(enumerate(sim), key=operator.itemgetter(1))
+        out_f.write('{raw},{sim},{si}\n'.format(raw=raw[i], sim=question[max_index]), si=max_value[0])
+    out_f.close()
 
 
 
