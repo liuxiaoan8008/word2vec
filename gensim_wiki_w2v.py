@@ -133,12 +133,13 @@ def get_sim_text(in_file,sim_file,out_file,model):
         seg_question.append(jieba.lcut(x))
 
     out_f = open(out_file, 'w')
-    for raw_words,i in zip(seg_raw,len(raw)):
+    for raw_words,i in zip(seg_raw,range(len(raw))):
         sim = []
         for question_words in seg_question:
             sim.append(sentence_word2vec_sim(raw_words,question_words,model,50))
         max_index, max_value = max(enumerate(sim), key=operator.itemgetter(1))
-        out_f.write('{raw},{sim},{si}\n'.format(raw=raw[i], sim=question[max_index]), si=max_value[0])
+        print max_value
+        out_f.write('{raw_new},{sim_new},{si_new}\n'.format(raw_new=raw[i], sim_new=question[max_index], si_new=max_value))
     out_f.close()
 
 
