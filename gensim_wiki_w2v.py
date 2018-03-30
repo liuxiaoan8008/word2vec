@@ -56,9 +56,9 @@ def train_model(sentences):
     print 'finish.'
 
 # print 'Step 1: read clean data .... '
-# sentences = read_data(data_path)
-# for l in sentences[:20]:
-#     print l
+sentences = read_data(data_path)
+for l in sentences[:20]:
+    print l
 # print
 # start = time.time()
 # train_model(sentences)
@@ -71,7 +71,13 @@ def train_model(sentences):
 # wordcut('std_zh_wiki_02')
 
 model = word2vec.Word2Vec.load(model_path+model_name)
-print model.similarity(u'男人',u'女人')
+model = model.train(sentences)
+print 'save model...'
+model.save(model_path + 'jiuyang_'+model_name)
+print
+print 'finish.'
+
+# print model.similarity(u'男人',u'女人')
 
 import math
 def cosine_similarity(v1,v2):
@@ -106,7 +112,7 @@ def sentence_word2vec_sim(text1,text2, model, dim):
 
 
 
-print sentence_word2vec_sim(u'今晚饭还在煮就闻到烧焦的味了',u'机器有异味。', model, 50)
+# print sentence_word2vec_sim(u'今晚饭还在煮就闻到烧焦的味了',u'机器有异味。', model, 50)
 
 import jieba
 import operator
@@ -143,5 +149,5 @@ def get_sim_text(in_file,sim_file,out_file,model):
     out_f.close()
 
 
-get_sim_text('./data/jiuyang_raw_data.txt','./data/jiuyang_question.txt','./data/out_question_sim.txt',model)
+# get_sim_text('./data/jiuyang_raw_data.txt','./data/jiuyang_question.txt','./data/out_question_sim.txt',model)
 
