@@ -54,18 +54,20 @@ def train_model(sentences):
     print
     print 'finish.'
 
-print 'Step 1: read clean data .... '
-sentences = read_data(data_path)
-for l in sentences[:20]:
-    print l
-print
-start = time.time()
-train_model(sentences)
-end = time.time()
-elapsed = end - start
-print 'The time token for training gensim-SG model : ',elapsed/60,'min'
-
+# print 'Step 1: read clean data .... '
+# sentences = read_data(data_path)
+# for l in sentences[:20]:
+#     print l
+# print
+# start = time.time()
+# train_model(sentences)
+# end = time.time()
+# elapsed = end - start
+# print 'The time token for training gensim-SG model : ',elapsed/60,'min'
+# 
 # wordcut('std_zh_wiki_00')
 # wordcut('std_zh_wiki_01')
 # wordcut('std_zh_wiki_02')
 
+model = word2vec.Word2Vec.load(model_path+model_name)
+print model.similarity('男人','女人')
