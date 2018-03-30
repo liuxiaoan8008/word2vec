@@ -110,6 +110,7 @@ print sentence_word2vec_sim(u'今晚饭还在煮就闻到烧焦的味了',u'机�
 
 import jieba
 import operator
+
 def get_sim_text(in_file,sim_file,out_file,model):
     raw = []
     with open(in_file) as f:
@@ -141,4 +142,5 @@ def get_sim_text(in_file,sim_file,out_file,model):
     out_f.close()
 
 
+get_sim_text('./data/jiuyang_raw_data.txt','./data/jiuyang_question.txt','./data/out_question_sim.txt',model)
 
