@@ -80,6 +80,7 @@ print 'finish.'
 # print model.similarity(u'男人',u'女人')
 
 import math
+
 def cosine_similarity(v1,v2):
     "compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)"
     sumxx, sumxy, sumyy = 0, 0, 0
@@ -107,8 +108,7 @@ def sentence_word2vec_sim(text1,text2, model, dim):
         except Exception as e:
             print e
             text2vec = np.add(text2vec,np.asarray([0. for _ in range(dim)]))
-
-    return cosine_similarity(text1vec,text2vec)
+    return cosine_similarity(text1vec/float(len(text1)),text2vec/float(len(text2)))
 
 
 
@@ -142,7 +142,9 @@ def get_sim_text(in_file,sim_file,out_file,model):
     for raw_words,i in zip(seg_raw,range(len(raw))):
         sim = []
         for question_words in seg_question:
-            sim.append(sentence_word2vec_sim(raw_words,question_words,model,50))
+            similarity = sentence_word2vec_sim(raw_words,question_words,model,50)
+            sim.append(similarity)
+            print '{raw_new},{sim_new},{si_new}\n'.format(raw_new=raw[i], sim_new=''.join(question_words), si_new=similarity)
         max_index, max_value = max(enumerate(sim), key=operator.itemgetter(1))
         print max_value
         out_f.write('{raw_new},{sim_new},{si_new}\n'.format(raw_new=raw[i], sim_new=question[max_index], si_new=max_value))
